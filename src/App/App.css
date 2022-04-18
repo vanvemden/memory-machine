@@ -1,0 +1,19 @@
+.Card {
+  padding: 1rem;
+}
+
+.Card-image {
+  max-height: 15rem;
+  max-width: 15rem;
+}
+
+.Card-name {
+  padding-top: 1rem;
+}
+
+.CardGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
