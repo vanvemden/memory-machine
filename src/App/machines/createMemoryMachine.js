@@ -3,7 +3,7 @@ import { assign, createMachine } from 'xstate';
 const isGameOver = (context) =>
   context.matchedNames.size === context.cardCount / 2;
 
-export const createMemoryMachine = (initialContext) =>
+const createMemoryMachine = (initialContext) =>
   createMachine(
     {
       id: 'memoryMachine',
@@ -71,3 +71,5 @@ export const createMemoryMachine = (initialContext) =>
       },
     }
   );
+
+export default createMemoryMachine;

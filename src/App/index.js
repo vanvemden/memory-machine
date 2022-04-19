@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useMachine } from '@xstate/react';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_CHARACTERS } from '../Apollo/queries';
 
 import './App.css';
-import CardGrid from './CardGrid';
-import ErrorPage from './ErrorPage';
-import LoadingPage from './LoadingPage';
-import { MACHINE_INITIAL_CONTEXT } from './constants';
+import { CardGrid, ErrorPage, LoadingPage } from './components';
 import { MachineContext } from './context';
-import { createCardDeck } from './helpers';
+import { GET_CHARACTERS } from '../data/queries';
+import { createCardDeck } from './helpers/index';
 import { createMemoryMachine } from './machines';
+import { MEMORY_MACHINE_INITIAL_CONTEXT } from './machines/constants';
 
-const memoryMachine = createMemoryMachine(MACHINE_INITIAL_CONTEXT);
+const memoryMachine = createMemoryMachine(MEMORY_MACHINE_INITIAL_CONTEXT);
 
 function App() {
   const { loading, error, data } = useQuery(GET_CHARACTERS);
@@ -20,8 +18,8 @@ function App() {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    if (!loading) setCards(createCardDeck(data.characters.results));
-  }, [data, loading]);
+    if (!loading && !error) setCards(createCardDeck(data.characters.results));
+  }, [data, error, loading]);
 
   if (loading) return <LoadingPage />;
   if (error) return <ErrorPage />;

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import T from 'prop-types';
 
-import { MachineContext } from './context';
+import { MachineContext } from '../context';
 import Card from './Card';
 
 const CardGrid = ({ cards }) => {
