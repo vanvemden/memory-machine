@@ -1,13 +1,21 @@
-const createCardSet = (cards) => {
-  return cards.concat(cards);
+import { CARD_IMAGE_BACKSIDE } from './constants';
+
+const createCardDeck = (cards, deckSize = 24) => {
+  const randomCards = shuffleCards(filterCards(cards));
+  const halfDeck = randomCards.slice(0, deckSize / 2);
+  return shuffleCards(halfDeck.concat(halfDeck));
 };
 
-const shuffleCardSet = (cardSet) => {
-  for (let i = 0; i < cardSet.length; i++) {
+const filterCards = (cards) => {
+  return cards.filter((card) => card.image !== CARD_IMAGE_BACKSIDE);
+};
+
+const shuffleCards = (cards) => {
+  for (let i = 0; i < cards.length; i++) {
     const j = Math.floor(Math.random() * (i + 1));
-    [cardSet[i], cardSet[j]] = [cardSet[j], cardSet[i]];
+    [cards[i], cards[j]] = [cards[j], cards[i]];
   }
-  return cardSet;
+  return cards;
 };
 
-export { createCardSet, shuffleCardSet };
+export { createCardDeck };
