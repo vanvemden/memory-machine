@@ -1,19 +1,19 @@
 import React from 'react';
 import T from 'prop-types';
 
-import { CARD_BACKSIDE_IMAGE } from './constants';
+import { CARD_IMAGE_BACKSIDE } from './constants';
 
 const Card = ({ image, isMatched, isSelected, onClick, species }) => {
   // TODO Get random hover-hint from character props
   const hoverHint = `My species is ${species}`;
-  const imageToRender = isMatched || isSelected ? image : CARD_BACKSIDE_IMAGE;
+  const cardImage = isMatched || isSelected ? image : CARD_IMAGE_BACKSIDE;
 
   return (
     <div className='Card' onClick={onClick}>
       <img
         alt={hoverHint}
         className='Card-image'
-        src={imageToRender}
+        src={cardImage}
         title={hoverHint}
       />
     </div>
