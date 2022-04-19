@@ -2,7 +2,8 @@ import { gql } from 'apollo-boost';
 
 export const GET_CHARACTERS = gql`
   query GetCharacters {
-    characters {
+    # TODO Select characters from random page
+    characters(page: 1) {
       results {
         id
         name
