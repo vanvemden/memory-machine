@@ -1,8 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+body {
+  background-color: #000;;
+}
+
 .Card {
   padding: 1rem;
 }
 
+.Card.selected img {
+  border-color: green;
+}
+
 .Card-image {
+  border-radius: 50%;
+  border: 2px solid #ddd;
   max-height: 15rem;
   max-width: 15rem;
 }
@@ -24,11 +36,12 @@
 }
 
 .Score.active-player {
-  background-color: green;
+  background-color: #ddd;
 }
 
 .ScoreBoard {
   display: flex;
   flex-direction: row;
+  font-family: 'Creepster', cursive;
   padding: 1rem 1rem;
 }
