@@ -14,16 +14,18 @@ const CardGrid = ({ cards }) => {
       {cards.map(({ image, name, species }, index) => (
         <Card
           key={index}
-          id={name}
           image={image}
           isMatched={matchedNames.has(name)}
           isSelected={selectedIndices.has(index)}
           name={name}
-          onClick={() =>
-            send({
-              payload: { index, name },
-              type: 'SELECT',
-            })
+          onClick={
+            !selectedIndices.has(index)
+              ? () =>
+                  send({
+                    payload: { index, name },
+                    type: 'SELECT',
+                  })
+              : () => {}
           }
           species={species}
         />
