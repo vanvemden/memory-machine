@@ -53,10 +53,23 @@ const createMemoryMachine = (initialContext) =>
       actions: {
         compareSelected: assign((context) => {
           if (context.selectedNames.size === 1) {
+            // Player scores
+            const { score, ...rest } =
+              context.playerProps[context.currentPlayer];
+            context.playerProps[context.currentPlayer] = {
+              ...rest,
+              score: score + 1,
+            };
             context.matchedNames = new Set([
               ...context.matchedNames,
               ...context.selectedNames,
             ]);
+          } else {
+            // Next player
+            context.currentPlayer =
+              context.currentPlayer === context.playerCount
+                ? 1
+                : context.currentPlayer + 1;
           }
           context.selectedIndices = new Set();
           context.selectedNames = new Set();

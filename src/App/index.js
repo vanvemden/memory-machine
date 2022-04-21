@@ -3,7 +3,7 @@ import { useMachine } from '@xstate/react';
 import { useQuery } from '@apollo/react-hooks';
 
 import './App.css';
-import { CardGrid, ErrorPage, LoadingPage } from './components';
+import { CardGrid, ErrorPage, LoadingPage, ScoreBoard } from './components';
 import { MachineContext } from './context';
 import { GET_CHARACTERS } from '../data/queries';
 import { createCardDeck } from './helpers/index';
@@ -26,6 +26,7 @@ function App() {
 
   return (
     <MachineContext.Provider value={{ state, send }}>
+      <ScoreBoard />
       <CardGrid cards={cards} />;
     </MachineContext.Provider>
   );

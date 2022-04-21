@@ -17,3 +17,18 @@
   flex-wrap: wrap;
   padding: 1rem;
 }
+
+.Score {
+  flex: 1;
+  text-align: center;
+}
+
+.Score.active-player {
+  background-color: green;
+}
+
+.ScoreBoard {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 1rem;
+}
