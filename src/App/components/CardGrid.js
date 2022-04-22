@@ -23,7 +23,7 @@ const CardGrid = ({ cards }) => {
               ? () =>
                   send({
                     payload: { index, name },
-                    type: 'SELECT',
+                    type: 'CLICK_CARD',
                   })
               : () => {}
           }

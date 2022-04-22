@@ -3,7 +3,13 @@ import { useMachine } from '@xstate/react';
 import { useQuery } from '@apollo/react-hooks';
 
 import './App.css';
-import { CardGrid, ErrorPage, LoadingPage, ScoreBoard } from './components';
+import {
+  ConditionalRender,
+  ErrorPage,
+  GamePage,
+  HomePage,
+  LoadingPage,
+} from './components';
 import { MachineContext } from './context';
 import { GET_CHARACTERS } from '../data/queries';
 import { createCardDeck } from './helpers/index';
@@ -26,8 +32,12 @@ function App() {
 
   return (
     <MachineContext.Provider value={{ state, send }}>
-      <ScoreBoard />
-      <CardGrid cards={cards} />;
+      <ConditionalRender
+        Component={GamePage}
+        FallbackComponent={HomePage}
+        propsToPassDown={{ cards }}
+        shouldRender={state.value !== 'idle'}
+      />
     </MachineContext.Provider>
   );
 }
