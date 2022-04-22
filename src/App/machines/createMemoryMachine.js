@@ -3,6 +3,9 @@ import { assign, createMachine } from 'xstate';
 const isGameOver = (context) =>
   context.matchedNames.size === context.cardCount / 2;
 
+const isMatch = (context) =>
+  context.selectedNames.size === 1 && context.selectedIndices.size === 2;
+
 const createMemoryMachine = (initialContext) =>
   createMachine(
     {
@@ -12,35 +15,56 @@ const createMemoryMachine = (initialContext) =>
       states: {
         idle: {
           on: {
-            SELECT: {
-              actions: ['selectCard'],
-              target: 'selectedFirst',
+            START_GAME: {
+              actions: ['setGame'],
+              target: 'waitForFirstCard',
             },
           },
         },
-        selectedFirst: {
+        waitForFirstCard: {
           on: {
-            SELECT: {
-              actions: ['selectCard'],
-              target: 'selectedSecond',
+            CLICK_CARD: {
+              actions: ['flipCard'],
+              target: 'waitForSecondCard',
             },
           },
         },
-        selectedSecond: {
-          after: {
-            500: { target: 'comparing' },
+        waitForSecondCard: {
+          on: {
+            CLICK_CARD: {
+              actions: ['flipCard'],
+              target: 'pause',
+            },
           },
         },
-        comparing: {
-          entry: 'compareSelected',
+        pause: {
+          after: {
+            1000: { target: 'compareCards' },
+          },
+        },
+        compareCards: {
           always: [
             {
-              target: 'finished',
-              cond: isGameOver,
+              actions: ['updateScore', 'setMatchedCards'],
+              cond: isMatch,
+              target: 'checkGameStatus',
             },
             {
-              target: 'idle',
+              actions: ['flipCardsBack', 'nextTurn'],
+              cond: !isMatch,
+              target: 'waitForFirstCard',
+            },
+          ],
+        },
+        checkGameStatus: {
+          always: [
+            {
+              cond: isGameOver,
+              target: 'finished',
+            },
+            {
               cond: !isGameOver,
+              target: 'waitForFirstCard',
             },
           ],
         },
@@ -51,35 +75,45 @@ const createMemoryMachine = (initialContext) =>
     },
     {
       actions: {
-        compareSelected: assign((context) => {
-          if (context.selectedNames.size === 1) {
-            // Player scores
-            const { score, ...rest } =
-              context.playerProps[context.currentPlayer];
-            context.playerProps[context.currentPlayer] = {
-              ...rest,
-              score: score + 1,
-            };
-            context.matchedNames = new Set([
-              ...context.matchedNames,
-              ...context.selectedNames,
-            ]);
-          } else {
-            // Next player
-            context.currentPlayer =
-              context.currentPlayer === context.playerCount
-                ? 1
-                : context.currentPlayer + 1;
-          }
-          context.selectedIndices = new Set();
-          context.selectedNames = new Set();
-          return context;
-        }),
-        selectCard: assign((context, { payload }) => {
+        flipCard: assign((context, { payload }) => {
           const { index, name } = payload;
           context.selectedIndices.add(index);
           context.selectedNames.add(name);
           return context;
+        }),
+
+        flipCardsBack: assign((context) => {
+          context.selectedIndices = new Set();
+          context.selectedNames = new Set();
+        }),
+
+        nextTurn: assign((context) => {
+          context.currentPlayer =
+            context.currentPlayer === context.playerCount
+              ? 1
+              : context.currentPlayer + 1;
+        }),
+
+        setGame: assign((context) => {
+          context.playerProps = new Map();
+          for (let i = 1; i <= context.playerCount; i++) {
+            context.playerProps.set(i, { score: 0 });
+          }
+        }),
+
+        setMatchedCards: assign((context) => {
+          context.matchedNames = new Set([
+            ...context.matchedNames,
+            ...context.selectedNames,
+          ]);
+        }),
+
+        updateScore: assign((context) => {
+          const { score, ...rest } = context.playerProps[context.currentPlayer];
+          context.playerProps[context.currentPlayer] = {
+            ...rest,
+            score: score + 1,
+          };
         }),
       },
     }

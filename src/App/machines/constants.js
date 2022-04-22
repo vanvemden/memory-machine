@@ -3,11 +3,7 @@ export const MEMORY_MACHINE_INITIAL_CONTEXT = {
   currentPlayer: 1,
   matchedNames: new Set(),
   playerCount: 2,
-  // TODO: Set playerScores shape at game start
-  playerProps: {
-    1: { score: 0 },
-    2: { score: 0 },
-  },
+  playerProps: new Map(),
   selectedIndices: new Set(),
   selectedNames: new Set(),
 };
