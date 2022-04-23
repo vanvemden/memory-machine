@@ -19,6 +19,12 @@ const createMemoryMachine = (initialContext) =>
               actions: ['setGame'],
               target: 'waitForFirstCard',
             },
+            SELECT_CARD_COUNT: {
+              actions: ['setCardCount'],
+            },
+            SELECT_PLAYER_COUNT: {
+              actions: ['setPlayerCount'],
+            },
           },
         },
         waitForFirstCard: {
@@ -45,12 +51,12 @@ const createMemoryMachine = (initialContext) =>
         compareCards: {
           always: [
             {
-              actions: ['updateScore', 'setMatchedCards'],
+              actions: ['updateScore', 'setMatchedCards', 'handleCards'],
               cond: isMatch,
               target: 'checkGameStatus',
             },
             {
-              actions: ['flipCardsBack', 'nextTurn'],
+              actions: ['handleCards', 'nextTurn'],
               cond: !isMatch,
               target: 'waitForFirstCard',
             },
@@ -82,7 +88,7 @@ const createMemoryMachine = (initialContext) =>
           return context;
         }),
 
-        flipCardsBack: assign((context) => {
+        handleCards: assign((context) => {
           context.selectedIndices = new Set();
           context.selectedNames = new Set();
         }),
@@ -94,11 +100,21 @@ const createMemoryMachine = (initialContext) =>
               : context.currentPlayer + 1;
         }),
 
+        setCardCount: assign((context, { payload }) => {
+          const { value } = payload;
+          context.cardCount = value;
+        }),
+
         setGame: assign((context) => {
-          context.playerProps = new Map();
+          context.playerScores = new Map();
           for (let i = 1; i <= context.playerCount; i++) {
-            context.playerProps.set(i, { score: 0 });
+            context.playerScores.set(i, 0);
           }
+        }),
+
+        setPlayerCount: assign((context, { payload }) => {
+          const { value } = payload;
+          context.playerCount = value;
         }),
 
         setMatchedCards: assign((context) => {
@@ -109,11 +125,8 @@ const createMemoryMachine = (initialContext) =>
         }),
 
         updateScore: assign((context) => {
-          const { score, ...rest } = context.playerProps[context.currentPlayer];
-          context.playerProps[context.currentPlayer] = {
-            ...rest,
-            score: score + 1,
-          };
+          const score = context.playerScores.get(context.currentPlayer);
+          context.playerScores.set(context.currentPlayer, score + 1);
         }),
       },
     }
