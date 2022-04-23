@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 
 import { MachineContext } from '../context';
-import selectScores from '../helpers/selectScores';
+import selectScoreProps from '../helpers/selectScoreProps';
 
 const ScoreBoard = () => {
   const memoryMachine = useContext(MachineContext);
   const { state } = memoryMachine;
-  const scores = selectScores(state.context);
+  const scores = selectScoreProps(state.context);
 
   return (
     <div className='ScoreBoard'>

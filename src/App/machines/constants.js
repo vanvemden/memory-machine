@@ -3,7 +3,7 @@ export const MEMORY_MACHINE_INITIAL_CONTEXT = {
   currentPlayer: 1,
   matchedNames: new Set(),
   playerCount: 2,
-  playerProps: new Map(),
+  playerScores: new Map(),
   selectedIndices: new Set(),
   selectedNames: new Set(),
 };
