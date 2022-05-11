@@ -1,18 +1,48 @@
 import { assign, createMachine } from 'xstate';
 
+import { MEMORY_MACHINE_INITIAL_CONTEXT } from './constants';
+import { fetchCharacters } from '../../data';
+import { createCardDeck } from '../helpers';
+
 const isGameOver = (context) =>
   context.matchedNames.size === context.cardCount / 2;
 
 const isMatch = (context) =>
   context.selectedNames.size === 1 && context.selectedIndices.size === 2;
 
-const createMemoryMachine = (initialContext) =>
+const createMemoryMachine = () =>
   createMachine(
     {
       id: 'memoryMachine',
-      initial: 'idle',
-      context: initialContext,
+      initial: 'loading',
+      context: MEMORY_MACHINE_INITIAL_CONTEXT,
       states: {
+        loading: {
+          invoke: {
+            src: fetchCharacters,
+            onError: 'error',
+            onDone: {
+              target: 'idle',
+              actions: assign({
+                cards: ({ cardCount }, event) =>
+                  createCardDeck({
+                    cardCount,
+                    images: event.data.data.characters.results,
+                  }),
+              }),
+            },
+          },
+        },
+        error: {
+          on: {
+            REFETCH: 'loading',
+          },
+        },
+        setup: {
+          always: {
+            actions: ['setupGame'],
+          },
+        },
         idle: {
           on: {
             START_GAME: {
@@ -123,6 +153,8 @@ const createMemoryMachine = (initialContext) =>
             ...context.selectedNames,
           ]);
         }),
+
+        setupGame: assign((context) => {}),
 
         updateScore: assign((context) => {
           const score = context.playerScores.get(context.currentPlayer);

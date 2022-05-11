@@ -1,17 +1,11 @@
-import T from 'prop-types';
-
 import ScoreBoard from './ScoreBoard';
 import CardGrid from './CardGrid';
 
-const GamePage = ({ cards }) => (
+const GamePage = () => (
   <>
     <ScoreBoard />
-    <CardGrid cards={cards} />;
+    <CardGrid />;
   </>
 );
-
-GamePage.propTypes = {
-  cards: T.array.isRequired,
-};
 
 export default GamePage;

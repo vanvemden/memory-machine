@@ -1,5 +1,6 @@
 export const MEMORY_MACHINE_INITIAL_CONTEXT = {
   cardCount: 24,
+  cards: [],
   currentPlayer: 1,
   matchedNames: new Set(),
   playerCount: 2,

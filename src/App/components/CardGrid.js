@@ -1,13 +1,15 @@
 import { useContext } from 'react';
-import T from 'prop-types';
 
 import { MachineContext } from '../context';
 import Card from './Card';
 
-const CardGrid = ({ cards }) => {
+const CardGrid = () => {
   const memoryMachine = useContext(MachineContext);
-  const { state, send } = memoryMachine;
-  const { matchedNames, selectedIndices } = state.context;
+  const {
+    state: { context },
+    send,
+  } = memoryMachine;
+  const { cards, matchedNames, selectedIndices } = context;
 
   return (
     <div className='CardGrid'>
@@ -32,16 +34,6 @@ const CardGrid = ({ cards }) => {
       ))}
     </div>
   );
-};
-
-CardGrid.propTypes = {
-  cards: T.arrayOf(
-    T.shape({
-      image: T.string.isRequired,
-      name: T.string.isRequired,
-      species: T.string.isRequired,
-    })
-  ),
 };
 
 export default CardGrid;
