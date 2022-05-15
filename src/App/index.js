@@ -10,9 +10,9 @@ import {
   LoadingPage,
 } from './components';
 import { MachineContext } from './context';
-import { createMemoryMachine } from './machines';
+import { MemoryMachine } from './machines';
 
-const memoryMachine = createMemoryMachine();
+const memoryMachine = MemoryMachine();
 
 function App() {
   const [state, send] = useMachine(memoryMachine);

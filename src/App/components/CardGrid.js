@@ -9,7 +9,7 @@ const CardGrid = () => {
     state: { context },
     send,
   } = memoryMachine;
-  const { cards, matchedNames, selectedIndices } = context;
+  const { cards, matchedIDs, selectedIndices } = context;
 
   return (
     <div className='CardGrid'>
@@ -17,7 +17,7 @@ const CardGrid = () => {
         <Card
           key={index}
           image={image}
-          isMatched={matchedNames.has(name)}
+          isMatched={matchedIDs.has(name)}
           isSelected={selectedIndices.has(index)}
           name={name}
           onClick={

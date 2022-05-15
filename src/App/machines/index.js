@@ -1,3 +1,3 @@
-import createMemoryMachine from './createMemoryMachine';
+import MemoryMachine from './MemoryMachine';
 
-export { createMemoryMachine };
+export { MemoryMachine };

@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 
 import { MachineContext } from '../context';
-import selectScoreProps from '../helpers/selectScoreProps';
 
 const ScoreBoard = () => {
   const memoryMachine = useContext(MachineContext);
-  const { state } = memoryMachine;
-  const scores = selectScoreProps(state.context);
+  const {
+    state: { context },
+  } = memoryMachine;
+  const { scoreCards } = context;
 
   return (
     <div className='ScoreBoard'>
-      {scores.map(({ isActive, player, score }) => (
+      {scoreCards.map(({ isActive, player, score }) => (
         <div
           key={player}
           className={`Score ${isActive ? 'active-player' : ''}`}
