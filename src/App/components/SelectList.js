@@ -1,13 +1,21 @@
 import T from 'prop-types';
 
-const SelectList = ({ items, ...selectProps }) => (
-  <select {...selectProps}>
-    {items.map(({ label, value, ...optionProps }) => (
-      <option key={value} value={value} {...optionProps}>
-        {label ? label : value}
-      </option>
-    ))}
-  </select>
+import ConditionalRender from './ConditionalRender';
+
+const SelectList = ({ items, label, ...selectProps }) => (
+  <div className='SelectList'>
+    <ConditionalRender
+      Component={<label>{label}</label>}
+      shouldRender={!!label}
+    />
+    <select {...selectProps}>
+      {items.map(({ label, value, ...optionProps }) => (
+        <option key={value} value={value} {...optionProps}>
+          {label ? label : value}
+        </option>
+      ))}
+    </select>
+  </div>
 );
 
 SelectList.propTypes = {

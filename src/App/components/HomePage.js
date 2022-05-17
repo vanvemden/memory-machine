@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import RickAndMortyLogo from '../images/RickAndMortyLogo';
+
 import SelectList from './SelectList';
 import { cardCountOptions, playerCountOptions } from './constants';
 import { MachineContext } from '../context';
@@ -10,30 +12,35 @@ const HomePage = () => {
 
   return (
     <div className='HomePage'>
-      <h1>{state.value}</h1>
-      <SelectList
-        id='CardCount'
-        items={cardCountOptions}
-        onChange={(e) =>
-          send({
-            payload: { value: parseInt(e.target.value) },
-            type: 'SELECT_CARD_COUNT',
-          })
-        }
-        selected={state.context.cardCount}
-      />
-      <SelectList
-        id='PlayerCount'
-        items={playerCountOptions}
-        onChange={(e) =>
-          send({
-            payload: { value: parseInt(e.target.value) },
-            type: 'SELECT_PLAYER_COUNT',
-          })
-        }
-        selected={state.context.playerCount}
-      />
-      <button onClick={() => send({ type: 'START_GAME' })}>Start Game</button>
+      <RickAndMortyLogo />
+      <h1>MEMORY GAME</h1>
+      <div className='FormContainer'>
+        <SelectList
+          id='PlayerCount'
+          items={playerCountOptions}
+          label='players'
+          onChange={(e) =>
+            send({
+              payload: { value: parseInt(e.target.value) },
+              type: 'SELECT_PLAYER_COUNT',
+            })
+          }
+          selected={state.context.playerCount}
+        />
+        <SelectList
+          id='CardCount'
+          items={cardCountOptions}
+          label='cards'
+          onChange={(e) =>
+            send({
+              payload: { value: parseInt(e.target.value) },
+              type: 'SELECT_CARD_COUNT',
+            })
+          }
+          selected={state.context.cardCount}
+        />
+        <button onClick={() => send({ type: 'START_GAME' })}>start game</button>
+      </div>
     </div>
   );
 };
