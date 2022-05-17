@@ -1,4 +1,4 @@
-import { CARD_IMAGE_BACKSIDE } from '../components/constants';
+import { ELEMENTS_TO_FILTER } from './constants';
 
 const isGameOver = (context) =>
   context.matchedIDs.size === context.cardCount / 2;
@@ -13,7 +13,7 @@ const createCards = ({ cardCount, images }) => {
 };
 
 const filterElements = (cards) => {
-  return cards.filter((card) => card.image !== CARD_IMAGE_BACKSIDE);
+  return cards.filter((card) => !ELEMENTS_TO_FILTER.includes(card.image));
 };
 
 const shuffleElements = (elements) => {
