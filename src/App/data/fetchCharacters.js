@@ -3,12 +3,11 @@ import { gql } from 'apollo-boost';
 
 import client from './client';
 
-const fetchCharacters = () =>
+const fetchCharacters = (randomPage) =>
   client.query({
     query: gql`
       query FetchCharacters {
-        # TODO Select characters from random page
-        characters(page: 10) {
+        characters(page: ${randomPage}) {
           results {
             id
             name

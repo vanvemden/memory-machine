@@ -2,16 +2,23 @@ import { assign } from 'xstate';
 
 import { createCards } from './helpers';
 
-export const resetSelectedCards = assign((context) => {
-  context.selectedIndices = new Set();
-  context.selectedIDs = new Set();
-});
-
-export const setNextPlayer = assign((context) => {
+export const changeCurrentPlayer = assign((context) => {
   context.currentPlayer =
     context.currentPlayer === context.playerCount
       ? 1
       : context.currentPlayer + 1;
+});
+
+export const initPlayerScores = assign((context) => {
+  context.playerScores = new Map();
+  for (let i = 1; i <= context.playerCount; i++) {
+    context.playerScores.set(i, 0);
+  }
+});
+
+export const resetSelectedCards = assign((context) => {
+  context.selectedIndices = new Set();
+  context.selectedIDs = new Set();
 });
 
 export const setCardCount = assign((context, { payload }) => {
@@ -27,11 +34,8 @@ export const setCards = assign({
     }),
 });
 
-export const setGame = assign((context) => {
-  context.playerScores = new Map();
-  for (let i = 1; i <= context.playerCount; i++) {
-    context.playerScores.set(i, 0);
-  }
+export const setMatchedCards = assign((context) => {
+  context.matchedIDs = new Set([...context.matchedIDs, ...context.selectedIDs]);
 });
 
 export const setPlayerCount = assign((context, { payload }) => {
@@ -39,11 +43,16 @@ export const setPlayerCount = assign((context, { payload }) => {
   context.playerCount = value;
 });
 
-export const setScoreCards = assign((context) => {
+export const setRandomPage = assign({
+  randomPage: ({ totalPages }) =>
+    Math.floor(Math.random() * (totalPages - 1) + 1),
+});
+
+export const updateScoreBoard = assign((context) => {
   const { currentPlayer, playerCount, playerScores } = context;
-  context.scoreCards = [];
+  context.scoreBoard = [];
   for (let player = 1; player <= playerCount; player++) {
-    context.scoreCards.push({
+    context.scoreBoard.push({
       isActive: player === currentPlayer,
       player,
       score: playerScores.get(player),
@@ -58,13 +67,11 @@ export const setSelectedCard = assign((context, { payload }) => {
   return context;
 });
 
-export const setMatchedCards = assign((context) => {
-  context.matchedIDs = new Set([...context.matchedIDs, ...context.selectedIDs]);
+export const setTotalPages = assign({
+  totalPages: (_, event) => event.data.data.characters.info.pages,
 });
 
-export const setupGame = assign((context) => {});
-
-export const updateScore = assign((context) => {
+export const updatePlayerScore = assign((context) => {
   const score = context.playerScores.get(context.currentPlayer);
   context.playerScores.set(context.currentPlayer, score + 1);
 });
