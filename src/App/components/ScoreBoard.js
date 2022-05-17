@@ -7,11 +7,11 @@ const ScoreBoard = () => {
   const {
     state: { context },
   } = memoryMachine;
-  const { scoreCards } = context;
+  const { scoreBoard } = context;
 
   return (
     <div className='ScoreBoard'>
-      {scoreCards.map(({ isActive, player, score }) => (
+      {scoreBoard.map(({ isActive, player, score }) => (
         <div
           key={player}
           className={`Score ${isActive ? 'active-player' : ''}`}
