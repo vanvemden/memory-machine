@@ -1,4 +1,4 @@
-export const cardCountOptions = [{ value: 24 }, { value: 36 }, { value: 48 }];
+export const cardCountOptions = [{ value: 20 }, { value: 32 }, { value: 44 }];
 
 export const playerCountOptions = [
   { value: 1 },

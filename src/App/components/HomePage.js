@@ -9,6 +9,7 @@ import { MachineContext } from '../context';
 const HomePage = () => {
   const memoryMachine = useContext(MachineContext);
   const { state, send } = memoryMachine;
+  const { cardCount, playerCount } = state.context;
 
   return (
     <div className='HomePage'>
@@ -25,7 +26,7 @@ const HomePage = () => {
               type: 'SELECT_PLAYER_COUNT',
             })
           }
-          selected={state.context.playerCount}
+          value={playerCount}
         />
         <SelectList
           id='CardCount'
@@ -37,7 +38,7 @@ const HomePage = () => {
               type: 'SELECT_CARD_COUNT',
             })
           }
-          selected={state.context.cardCount}
+          value={cardCount}
         />
         <button onClick={() => send({ type: 'START_GAME' })}>start game</button>
       </div>

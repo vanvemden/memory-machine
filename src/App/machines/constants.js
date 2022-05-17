@@ -4,13 +4,13 @@ export const ELEMENTS_TO_FILTER = [
 ];
 
 export const MEMORY_MACHINE_INITIAL_CONTEXT = {
-  cardCount: 24,
+  cardCount: 20,
   cards: [],
   currentPlayer: 1,
   matchedIDs: new Set(),
   playerCount: 2,
   playerScores: new Map(),
-  scoreCards: [],
+  scoreBoard: [],
   selectedIDs: new Set(),
   selectedIndices: new Set(),
 };
