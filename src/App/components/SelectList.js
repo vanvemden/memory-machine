@@ -2,7 +2,7 @@ import T from 'prop-types';
 
 import ConditionalRender from './ConditionalRender';
 
-const SelectList = ({ items, label, ...selectProps }) => (
+const SelectList = ({ items, label, selected, ...selectProps }) => (
   <div className='SelectList'>
     <ConditionalRender
       Component={<label>{label}</label>}
